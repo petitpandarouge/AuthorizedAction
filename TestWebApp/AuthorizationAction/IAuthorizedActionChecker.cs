@@ -1,4 +1,4 @@
-﻿namespace TestWebApp.AuthorizationAction.DependencyInjection
+﻿namespace TestWebApp.AuthorizationAction
 {
     /// <summary>
     /// Interface defining a global policy checker for a given action.
@@ -6,6 +6,7 @@
     /// <typeparam name="TPolicyContext">The type of the context used to check the policies.</typeparam>
     /// <typeparam name="TAction">The type of the authorized action to execute.</typeparam>
     public interface IAuthorizedActionChecker<TPolicyContext, TAction>
+        where TAction : class
     {
         #region Methods
 

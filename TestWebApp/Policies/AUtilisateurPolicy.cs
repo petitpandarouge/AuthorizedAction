@@ -3,7 +3,7 @@ using TestWebApp.Policies.Context;
 
 namespace TestWebApp.Policies
 {
-    public interface IUtilisateurPolicy : IPolicy<IUtilisateurPolicyContext>
+    public abstract class AUtilisateurPolicy : APolicy<IUtilisateurPolicyContext>
     {
     }
 }

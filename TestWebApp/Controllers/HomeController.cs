@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using TestWebApp.Actions;
 using TestWebApp.AuthorizationAction;
-using TestWebApp.AuthorizationAction.DependencyInjection;
 using TestWebApp.Models;
 using TestWebApp.Policies.Context;
 

@@ -3,9 +3,9 @@ using TestWebApp.Policies.Context;
 
 namespace TestWebApp.Policies
 {
-    public class IsAdmin : IIsAdmin
+    public class IsAdmin : AUtilisateurPolicy, IIsAdmin
     {
-        public bool Check(IUtilisateurPolicyContext context)
+        public override bool Check(IUtilisateurPolicyContext context)
         {
             return context.Utilisateur.Profile == Profile.Administrateur;
         }

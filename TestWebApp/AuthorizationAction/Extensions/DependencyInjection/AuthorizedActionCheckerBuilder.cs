@@ -1,10 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using TestWebApp.AuthorizationAction.DependencyInjection;
 
 namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
 {
+    /// <summary>
+    /// Class defining the authorization action checker builder.
+    /// </summary>
+    /// <typeparam name="TPolicyContext">The type of the context used to check the policies.</typeparam>
+    /// <typeparam name="TAction">The type of the authorized action to execute.</typeparam>
     internal class AuthorizedActionCheckerBuilder<TPolicyContext, TAction> : IAuthorizedActionCheckerBuilder<TPolicyContext, TAction>
+        where TAction : class
     {
         #region Fields
 
@@ -17,6 +22,16 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
         /// Stores the service provider.
         /// </summary>
         private readonly ServiceProvider serviceProvider;
+
+        /// <summary>
+        /// Stores the policies.
+        /// </summary>
+        private readonly PolicyCollection policies;
+
+        /// <summary>
+        /// Stores the main authorized action checker.
+        /// </summary>
+        private AuthorizedActionChecker<TPolicyContext, TAction> mainChecker;
 
         #endregion // Fields
 
@@ -33,13 +48,20 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
+            this.policies = new PolicyCollection();
+
+            // Registering the main checker.
             this.services = services;
+            this.services.AddScoped<IAuthorizedActionChecker<TPolicyContext, TAction>, AuthorizedActionChecker<TPolicyContext, TAction>>();
+
+            // Getting it to be able to configure it.
             this.serviceProvider = services.BuildServiceProvider();
+            this.mainChecker = this.serviceProvider.GetRequiredService<IAuthorizedActionChecker<TPolicyContext, TAction>>() as AuthorizedActionChecker<TPolicyContext, TAction>;
         }
 
         #endregion // Constructors
 
-        #region IAuthorizedActionCheckerBuilder
+        #region IAuthorizedActionCheckerBuilder<TPolicyContext, TAction>
 
         #region Methods
 
@@ -51,6 +73,8 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
         public IAuthorizedActionCheckerBuilder<TPolicyContext, TAction> Check<TPolicy>()
             where TPolicy : IPolicy
         {
+            // Registering the policy.
+            this.policies.Add(this.serviceProvider.GetRequiredService<TPolicy>());
 
             return this;
         }
@@ -58,19 +82,22 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
         /// <summary>
         /// Adds an execute order of the given action.
         /// </summary>
-        /// <typeparam name="TPolicy"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="TSpecificAction">The specific action.</typeparam>
+        /// <returns>The authorization action checker builder.</returns>
         public IAuthorizedActionCheckerBuilder<TPolicyContext, TAction> ThenExecute<TSpecificAction>()
-            where TSpecificAction : TAction
+            where TSpecificAction : class, TAction
         {
-            // Creating the checker in the services collections.
-            //this.services.AddScoped<IAuthorizedActionChecker<TPolicyContext, TAction>>();
+            // Adding the action in the services
+            this.services.AddScoped<TSpecificAction>();
+
+            AuthorizedSubActionChecker<TPolicyContext, TAction, TSpecificAction> subAction = new AuthorizedSubActionChecker<TPolicyContext, TAction, TSpecificAction>(this.policies, this.services);
+            this.mainChecker.AddSubAction(subAction);
 
             return this;
         }
 
         #endregion // Methods
 
-        #endregion // IAuthorizedActionCheckerBuilder
+        #endregion // IAuthorizedActionCheckerBuilder<TPolicyContext, TAction>
     }
 }

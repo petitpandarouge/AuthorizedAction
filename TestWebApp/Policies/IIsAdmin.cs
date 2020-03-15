@@ -1,6 +1,9 @@
-﻿namespace TestWebApp.Policies
+﻿using TestWebApp.AuthorizationAction;
+using TestWebApp.Policies.Context;
+
+namespace TestWebApp.Policies
 {
-    public interface IIsAdmin : IUtilisateurPolicy
+    public interface IIsAdmin : IPolicy<IUtilisateurPolicyContext>
     {
     }
 }

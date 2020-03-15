@@ -5,6 +5,7 @@
     /// </summary>
     /// <typeparam name="TContext">The type of the context used to check the policy.</typeparam>
     public interface IPolicy<TContext> : IPolicy
+        where TContext : class
     {
         #region Methods
 
@@ -23,6 +24,15 @@
     /// </summary>
     public interface IPolicy
     {
-        // Nothing to do.
+        #region Methods
+
+        /// <summary>
+        /// Checks if the policy is satisfied.
+        /// </summary>
+        /// <param name="context">The policy checking context.</param>
+        /// <returns>True if the policy is satisfied, false otherwise.</returns>
+        bool Check(object context);
+
+        #endregion // Methods
     }
 }

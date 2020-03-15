@@ -4,7 +4,13 @@ using System.Linq.Expressions;
 
 namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
 {
+    /// <summary>
+    /// Interface defining the authorization action checker builder.
+    /// </summary>
+    /// <typeparam name="TPolicyContext">The type of the context used to check the policies.</typeparam>
+    /// <typeparam name="TAction">The type of the authorized action to execute.</typeparam>
     public interface IAuthorizedActionCheckerBuilder<TPolicyContext, TAction>
+        where TAction: class
     {
         #region Methods
 
@@ -19,10 +25,10 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
         /// <summary>
         /// Adds an execute order of the given action.
         /// </summary>
-        /// <typeparam name="TPolicy"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="TSpecificAction">The specific action.</typeparam>
+        /// <returns>The authorization action checker builder.</returns>
         IAuthorizedActionCheckerBuilder<TPolicyContext, TAction> ThenExecute<TSpecificAction>()
-            where TSpecificAction : TAction;
+            where TSpecificAction : class, TAction;
 
         #endregion // Methods
     }
