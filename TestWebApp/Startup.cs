@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TestWebApp.Actions;
+using TestWebApp.AuthorizationAction.Extensions.DependencyInjection;
+using TestWebApp.Models;
+using TestWebApp.Policies;
+using TestWebApp.Policies.Context;
 
 namespace TestWebApp
 {
@@ -22,6 +27,13 @@ namespace TestWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddPolicy<IIsAdmin, IsAdmin>();
+
+            services.AddAuthorizedAction<CloturerEnquetePolicyContext, ICloturerEnquete>()
+                    .Check<IIsAdmin>()
+                    .ThenExecute<CloturerEnqueteAdmin>();
+
+
             services.AddControllersWithViews();
         }
 
@@ -46,7 +58,7 @@ namespace TestWebApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=CloturerEnquete}/{id?}");
             });
         }
     }

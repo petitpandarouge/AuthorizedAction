@@ -5,17 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using TestWebApp.Actions;
+using TestWebApp.AuthorizationAction;
+using TestWebApp.AuthorizationAction.DependencyInjection;
 using TestWebApp.Models;
+using TestWebApp.Policies.Context;
 
 namespace TestWebApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IAuthorizedActionChecker<CloturerEnquetePolicyContext, ICloturerEnquete> cloturerEnqueteChecker;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IAuthorizedActionChecker<CloturerEnquetePolicyContext, ICloturerEnquete> cloturerEnqueteChecker)
         {
             _logger = logger;
+            this.cloturerEnqueteChecker = cloturerEnqueteChecker;
         }
 
         public IActionResult Index()
@@ -32,6 +38,25 @@ namespace TestWebApp.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult CloturerEnquete()
+        {
+            CloturerEnquetePolicyContext context = new CloturerEnquetePolicyContext
+            {
+                Utilisateur = Utilisateur.CreateAdmin()
+            };
+
+            Enquete enquete = Enquete.Create();
+
+            IPolicyResult<ICloturerEnquete> result = this.cloturerEnqueteChecker.CheckPolicies(context);
+            if (result.Allowed)
+            {
+                result.Action.Execute(enquete);
+                return this.Ok();
+            }
+
+            return this.BadRequest();
         }
     }
 }
