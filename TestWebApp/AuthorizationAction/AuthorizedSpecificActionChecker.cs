@@ -21,9 +21,14 @@ namespace TestWebApp.AuthorizationAction
         private readonly IServiceProvider serviceProvider;
 
         /// <summary>
+        /// Stores the policy type for the current specific action.
+        /// </summary>
+        private readonly HashSet<Type> policyTypes;
+
+        /// <summary>
         /// Stores the policies.
         /// </summary>
-        private readonly PolicyCollection policies;
+        private PolicyCollection policies;
 
         #endregion // Fields
 
@@ -32,11 +37,11 @@ namespace TestWebApp.AuthorizationAction
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorizedSpecificActionChecker{TPolicyContext, TAction, TSpecificAction}"/> class.
         /// </summary>
-        /// <param name="policies">The policies to satisfy.</param>
+        /// <param name="policyTypes">The types of the policies to satisfy.</param>
         /// <param name="serviceProvider">The service provider.</param>
-        public AuthorizedSpecificActionChecker(PolicyCollection policies, IServiceProvider serviceProvider)
+        public AuthorizedSpecificActionChecker(HashSet<Type> policyTypes, IServiceProvider serviceProvider)
         {
-            this.policies = policies;
+            this.policyTypes = policyTypes;
             this.serviceProvider = serviceProvider;
         }
 
@@ -53,6 +58,13 @@ namespace TestWebApp.AuthorizationAction
         /// <returns>The policies checking result.</returns>
         public IPolicyResult<TAction> CheckPolicies(TPolicyContext context)
         {
+            if (this.policies == null)
+            {
+                // Getting the policies lazilly at the first call.
+                this.policies = PolicyCollection.Build(policyTypes, serviceProvider);
+            }
+
+            // Returning the specific action if it satisfies all the policies.
             if (this.policies.Check(context))
             {
                 return new AllowedResult<TAction>(this.serviceProvider.GetRequiredService<TSpecificAction>());

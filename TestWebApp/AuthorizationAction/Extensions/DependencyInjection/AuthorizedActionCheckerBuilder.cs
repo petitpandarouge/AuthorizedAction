@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
 {
@@ -24,9 +26,14 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
         private readonly ServiceProvider serviceProvider;
 
         /// <summary>
-        /// Stores the policies.
+        /// Stores the policy type for the current specific action.
         /// </summary>
-        private readonly PolicyCollection policies;
+        private HashSet<Type> policyTypes;
+
+        /// <summary>
+        /// Stores the map between a specific action type and its policy types.
+        /// </summary>
+        private readonly ConcurrentDictionary<Type, HashSet<Type>> specificActionTypeToPolicyTypes;
 
         #endregion // Fields
 
@@ -43,7 +50,8 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
-            this.policies = new PolicyCollection();
+            this.policyTypes = new HashSet<Type>();
+            this.specificActionTypeToPolicyTypes = new ConcurrentDictionary<Type, HashSet<Type>>();
             this.services = services;
             this.serviceProvider = services.BuildServiceProvider();
 
@@ -65,8 +73,8 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
         public IAuthorizedActionCheckerBuilder<TPolicyContext, TAction> Check<TPolicy>()
             where TPolicy : IPolicy
         {
-            // Registering the policy.
-            this.policies.Add(this.serviceProvider.GetRequiredService<TPolicy>());
+            // Registering the policy type.
+            this.policyTypes.Add(typeof(TPolicy));
 
             return this;
         }
@@ -82,11 +90,15 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
             // Registering the specific action.
             this.services.AddScoped<TSpecificAction>();
 
-            // Registering the specific action checker.
-            this.services.AddScoped<IAuthorizedSpecificActionChecker<TPolicyContext, TAction>>(serviceProvider => new AuthorizedSpecificActionChecker<TPolicyContext, TAction, TSpecificAction>(this.policies, serviceProvider));
+            //  Registering the policy types for the specific action.
+            Type specificActionType = typeof(TSpecificAction);
+            this.specificActionTypeToPolicyTypes[specificActionType] = this.policyTypes;
 
-            // Cleanning the policies collection for the next specific action.
-            this.policies.Clear();
+            // Registering the specific action checker.
+            this.services.AddScoped<IAuthorizedSpecificActionChecker<TPolicyContext, TAction>>(serviceProvider => new AuthorizedSpecificActionChecker<TPolicyContext, TAction, TSpecificAction>(this.specificActionTypeToPolicyTypes[specificActionType], serviceProvider));
+
+            // Initializing the policy types collection for the next specific action.
+            this.policyTypes = new HashSet<Type>();
 
             return this;
         }
