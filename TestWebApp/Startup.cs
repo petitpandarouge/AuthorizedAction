@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TestWebApp.Actions;
 using TestWebApp.AuthorizationAction.Extensions.DependencyInjection;
-using TestWebApp.Models;
 using TestWebApp.Policies;
 using TestWebApp.Policies.Context;
 
@@ -19,7 +14,7 @@ namespace TestWebApp
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -13,6 +14,11 @@ namespace TestWebApp.AuthorizationAction
         where TAction : class
     {
         #region Fields
+
+        /// <summary>
+        /// Stores the logger.
+        /// </summary>
+        private ILogger<AuthorizedActionChecker<TPolicyContext, TAction>> logger;
 
         /// <summary>
         /// Stores the service provider.
@@ -31,7 +37,7 @@ namespace TestWebApp.AuthorizationAction
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorizedActionChecker{TPolicyContext, TAction}"/> class.
         /// </summary>
-        /// <param name="provider">The global service provider.</param>
+        /// <param name="serviceProvider">The global service provider.</param>
         public AuthorizedActionChecker(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
@@ -50,6 +56,14 @@ namespace TestWebApp.AuthorizationAction
         /// <returns>The policies checking result.</returns>
         public IPolicyResult<TAction> CheckPolicies(TPolicyContext context)
         {
+            if (this.logger == null)
+            {
+                // Getting the logger lazilly at the first call.
+                this.logger = this.serviceProvider.GetService<ILogger<AuthorizedActionChecker<TPolicyContext, TAction>>>();
+            }
+
+            this.logger.LogDebug($"Checking the policies of the {typeof(TAction).FullName} action.");
+
             if (this.specificActions == null)
             {
                 // Getting the specific actions checkers lazilly at the first call.
@@ -57,7 +71,7 @@ namespace TestWebApp.AuthorizationAction
             }
 
             // Returning the first specific action that checks all its policies.
-            foreach (IAuthorizedActionChecker<TPolicyContext, TAction> specificAction in this.specificActions)
+            foreach (IAuthorizedSpecificActionChecker<TPolicyContext, TAction> specificAction in this.specificActions)
             {
                 IPolicyResult<TAction> result = specificAction.CheckPolicies(context);
                 if (result.Allowed)

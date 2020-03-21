@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -14,6 +15,11 @@ namespace TestWebApp.AuthorizationAction
         where TSpecificAction : class, TAction
     {
         #region Fields
+
+        /// <summary>
+        /// Stores the logger.
+        /// </summary>
+        private ILogger<AuthorizedSpecificActionChecker<TPolicyContext, TAction, TSpecificAction>> logger;
 
         /// <summary>
         /// Stores the service provider.
@@ -58,6 +64,14 @@ namespace TestWebApp.AuthorizationAction
         /// <returns>The policies checking result.</returns>
         public IPolicyResult<TAction> CheckPolicies(TPolicyContext context)
         {
+            if (this.logger == null)
+            {
+                // Getting the logger lazilly at the first call.
+                this.logger = this.serviceProvider.GetService<ILogger<AuthorizedSpecificActionChecker<TPolicyContext, TAction, TSpecificAction>>>();
+            }
+
+            this.logger.LogDebug($"Checking the policies of the {this.SpecificActionType.FullName} specific action.");
+
             if (this.policies == null)
             {
                 // Getting the policies lazilly at the first call.
@@ -67,6 +81,7 @@ namespace TestWebApp.AuthorizationAction
             // Returning the specific action if it satisfies all the policies.
             if (this.policies.Check(context))
             {
+                this.logger.LogDebug($"All the policies are satisfied. The {this.SpecificActionType.FullName} specific action execution is allowed.");
                 return new AllowedResult<TAction>(this.serviceProvider.GetRequiredService<TSpecificAction>());
             }
 
@@ -84,7 +99,7 @@ namespace TestWebApp.AuthorizationAction
         /// <summary>
         /// Gets the specific action type.
         /// </summary>
-        Type IAuthorizedSpecificActionChecker<TPolicyContext, TAction>.SpecificActionType 
+        public Type SpecificActionType 
         { 
             get
             {
