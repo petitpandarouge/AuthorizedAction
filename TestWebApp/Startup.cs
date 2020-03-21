@@ -23,10 +23,13 @@ namespace TestWebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddPolicy<IIsAdmin, IsAdmin>();
+            services.AddPolicy<IIsModification, IsModification>();
 
             services.AddAuthorizedAction<CloturerEnquetePolicyContext, ICloturerEnquete>()
                     .Check<IIsAdmin>()
-                    .ThenExecute<CloturerEnqueteAdmin>();
+                    .ThenExecute<CloturerEnqueteAdmin>()
+                    .Check<IIsModification>()
+                    .ThenExecute<CloturerEnqueteModification>();
 
 
             services.AddControllersWithViews();
