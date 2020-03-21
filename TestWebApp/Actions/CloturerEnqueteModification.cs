@@ -7,9 +7,5 @@ namespace TestWebApp.Actions
 {
     public class CloturerEnqueteModification : ACloturerEnquete
     {
-        protected override void LogProfile()
-        {
-            Console.WriteLine("Modification cloture enquète.");
-        }
     }
 }

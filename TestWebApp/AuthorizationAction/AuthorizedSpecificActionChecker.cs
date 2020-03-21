@@ -9,35 +9,35 @@ namespace TestWebApp.AuthorizationAction
     /// </summary>
     /// <typeparam name="TPolicyContext">The type of the context used to check the policies.</typeparam>
     /// <typeparam name="TAction">The type of the authorized action to execute.</typeparam>
-    public class AuthorizedSubActionChecker<TPolicyContext, TAction, TSpecificAction> : IAuthorizedSubActionChecker<TPolicyContext, TAction, TSpecificAction>
+    internal class AuthorizedSpecificActionChecker<TPolicyContext, TAction, TSpecificAction> : IAuthorizedSpecificActionChecker<TPolicyContext, TAction, TSpecificAction>
         where TAction : class
         where TSpecificAction : class, TAction
     {
         #region Fields
 
         /// <summary>
-        /// Stores the services collection.
+        /// Stores the service provider.
         /// </summary>
-        private readonly IServiceCollection services;
+        private readonly IServiceProvider serviceProvider;
 
         /// <summary>
         /// Stores the policies.
         /// </summary>
         private readonly PolicyCollection policies;
-        
+
         #endregion // Fields
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthorizedActionChecker{TPolicyContext, TAction}"/> class.
+        /// Initializes a new instance of the <see cref="AuthorizedSpecificActionChecker{TPolicyContext, TAction, TSpecificAction}"/> class.
         /// </summary>
         /// <param name="policies">The policies to satisfy.</param>
-        /// <param name="services">The services collection.</param>
-        public AuthorizedSubActionChecker(PolicyCollection policies, IServiceCollection services)
+        /// <param name="serviceProvider">The service provider.</param>
+        public AuthorizedSpecificActionChecker(PolicyCollection policies, IServiceProvider serviceProvider)
         {
             this.policies = policies;
-            this.services = services;
+            this.serviceProvider = serviceProvider;
         }
 
         #endregion // Constructors
@@ -55,8 +55,7 @@ namespace TestWebApp.AuthorizationAction
         {
             if (this.policies.Check(context))
             {
-                ServiceProvider serviceProvider = this.services.BuildServiceProvider();
-                return new AllowedResult<TAction>(serviceProvider.GetRequiredService<TSpecificAction>());
+                return new AllowedResult<TAction>(this.serviceProvider.GetRequiredService<TSpecificAction>());
             }
 
             return NotAllowedResult<TAction>.Default;
@@ -65,5 +64,24 @@ namespace TestWebApp.AuthorizationAction
         #endregion // Methods
 
         #endregion // IAuthorizedActionChecker<TPolicyContext, TAction>
+
+        #region IAuthorizedSpecificActionChecker<TPolicyContext, TAction>
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the specific action type.
+        /// </summary>
+        Type IAuthorizedSpecificActionChecker<TPolicyContext, TAction>.SpecificActionType 
+        { 
+            get
+            {
+                return typeof(TSpecificAction);
+            }
+        }
+
+        #endregion // Properties
+
+        #endregion // IAuthorizedSpecificActionChecker<TPolicyContext, TAction>
     }
 }

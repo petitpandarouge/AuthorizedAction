@@ -1,0 +1,13 @@
+﻿@model Enquete
+@{
+    ViewData["Title"] = "Clôturer enquête";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Résultat</h1>
+    @if (Model.DateCloture.HasValue)
+    {
+<p>L'enquête a bien été clôturée le @Model.DateCloture.Value.ToShortDateString() par @Model.UtilisateurModification.Prenom @Model.UtilisateurModification.Nom.</p>
+    }
+</div>
+

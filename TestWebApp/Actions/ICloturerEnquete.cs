@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TestWebApp.Models;
+﻿using TestWebApp.Models;
 
 namespace TestWebApp.Actions
 {
@@ -10,7 +6,7 @@ namespace TestWebApp.Actions
     {
         #region Methods
 
-        void Execute(Enquete enquete);
+        void Execute(Enquete enquete, Utilisateur utilisateur);
 
         #endregion // Methods
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 
 namespace TestWebApp.AuthorizationAction
@@ -14,9 +15,9 @@ namespace TestWebApp.AuthorizationAction
         #region Fields
 
         /// <summary>
-        /// Stores the sub actions list.
+        /// Stores the specific actions list.
         /// </summary>
-        private readonly HashSet<IAuthorizedActionChecker<TPolicyContext, TAction>> subActions;
+        private readonly List<IAuthorizedSpecificActionChecker<TPolicyContext, TAction>> specificActions;
 
         #endregion // Fields
 
@@ -25,31 +26,14 @@ namespace TestWebApp.AuthorizationAction
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorizedActionChecker{TPolicyContext, TAction}"/> class.
         /// </summary>
-        public AuthorizedActionChecker()
+        /// <param name="provider">The global service provider.</param>
+        public AuthorizedActionChecker(IServiceProvider provider)
         {
-            this.subActions = new HashSet<IAuthorizedActionChecker<TPolicyContext, TAction>>();
+            // Getting the specific actions checkers
+            this.specificActions = new List<IAuthorizedSpecificActionChecker<TPolicyContext, TAction>>(provider.GetServices<IAuthorizedSpecificActionChecker<TPolicyContext, TAction>>());
         }
 
         #endregion // Constructors
-
-        #region Methods
-
-        /// <summary>
-        /// Adds a sub action to the action checker.
-        /// </summary>
-        /// <param name="subAction">The authorized sub action.</param>
-        public void AddSubAction<TSpecificAction>(IAuthorizedSubActionChecker<TPolicyContext, TAction, TSpecificAction> subAction)
-            where TSpecificAction : class, TAction
-        {
-            if (subAction == null)
-            {
-                throw new ArgumentNullException(nameof(subAction));
-            }
-
-            this.subActions.Add(subAction);
-        }
-
-        #endregion // Methods
 
         #region IAuthorizedActionChecker<TPolicyContext, TAction>
 
@@ -62,7 +46,7 @@ namespace TestWebApp.AuthorizationAction
         /// <returns>The policies checking result.</returns>
         public IPolicyResult<TAction> CheckPolicies(TPolicyContext context)
         {
-            foreach (IAuthorizedActionChecker<TPolicyContext, TAction> subAction in this.subActions)
+            foreach (IAuthorizedActionChecker<TPolicyContext, TAction> subAction in this.specificActions)
             {
                 IPolicyResult<TAction> result = subAction.CheckPolicies(context);
                 if (result.Allowed)

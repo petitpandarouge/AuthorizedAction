@@ -13,6 +13,8 @@ namespace TestWebApp.Models
 
         public DateTime DateFermeture { get; set; }
 
+        public Utilisateur UtilisateurModification { get; set; }
+
         public static Enquete Create()
         {
             return new Enquete
@@ -22,9 +24,10 @@ namespace TestWebApp.Models
             };
         }
 
-        public void Cloturer()
+        public void Cloturer(Utilisateur utilisateur)
         {
             this.DateCloture = DateTime.Now;
+            this.UtilisateurModification = utilisateur;
         }
     }
 }

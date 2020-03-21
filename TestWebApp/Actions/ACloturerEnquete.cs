@@ -8,12 +8,9 @@ namespace TestWebApp.Actions
 {
     public abstract class ACloturerEnquete : ICloturerEnquete
     {
-        public void Execute(Enquete enquete)
+        public void Execute(Enquete enquete, Utilisateur utilisateur)
         {
-            this.LogProfile();
-            enquete.Cloturer();
+            enquete.Cloturer(utilisateur);
         }
-
-        protected abstract void LogProfile();
     }
 }

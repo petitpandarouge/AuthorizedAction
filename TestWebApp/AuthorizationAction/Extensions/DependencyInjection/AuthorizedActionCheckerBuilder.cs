@@ -28,11 +28,6 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
         /// </summary>
         private readonly PolicyCollection policies;
 
-        /// <summary>
-        /// Stores the main authorized action checker.
-        /// </summary>
-        private AuthorizedActionChecker<TPolicyContext, TAction> mainChecker;
-
         #endregion // Fields
 
         #region Constructors
@@ -49,14 +44,11 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
             }
 
             this.policies = new PolicyCollection();
+            this.services = services;
+            this.serviceProvider = services.BuildServiceProvider();
 
             // Registering the main checker.
-            this.services = services;
-            this.services.AddScoped<IAuthorizedActionChecker<TPolicyContext, TAction>, AuthorizedActionChecker<TPolicyContext, TAction>>();
-
-            // Getting it to be able to configure it.
-            this.serviceProvider = services.BuildServiceProvider();
-            this.mainChecker = this.serviceProvider.GetRequiredService<IAuthorizedActionChecker<TPolicyContext, TAction>>() as AuthorizedActionChecker<TPolicyContext, TAction>;
+            this.services.AddScoped<IAuthorizedActionChecker<TPolicyContext, TAction>, AuthorizedActionChecker<TPolicyContext, TAction>>();            
         }
 
         #endregion // Constructors
@@ -87,11 +79,14 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
         public IAuthorizedActionCheckerBuilder<TPolicyContext, TAction> ThenExecute<TSpecificAction>()
             where TSpecificAction : class, TAction
         {
-            // Adding the action in the services
+            // Registering the specific action.
             this.services.AddScoped<TSpecificAction>();
 
-            AuthorizedSubActionChecker<TPolicyContext, TAction, TSpecificAction> subAction = new AuthorizedSubActionChecker<TPolicyContext, TAction, TSpecificAction>(this.policies, this.services);
-            this.mainChecker.AddSubAction(subAction);
+            // Registering the specific action checker.
+            this.services.AddScoped<IAuthorizedSpecificActionChecker<TPolicyContext, TAction>>(serviceProvider => new AuthorizedSpecificActionChecker<TPolicyContext, TAction, TSpecificAction>(this.policies, serviceProvider));
+
+            // Cleanning the policies collection for the next specific action.
+            this.policies.Clear();
 
             return this;
         }

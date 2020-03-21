@@ -24,8 +24,8 @@ namespace TestWebApp.AuthorizationAction
             TContext typedContext = context as TContext;
             if (typedContext == null)
             {
-                string thisTypeName = this.GetType().Name;
-                string contextTypeName = typeof(TContext).Name;
+                string thisTypeName = this.GetType().FullName;
+                string contextTypeName = typeof(TContext).FullName;
                 throw new InvalidCastException($"The context given to a {thisTypeName} policy must of type {contextTypeName}.");
             }
 

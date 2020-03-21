@@ -47,11 +47,11 @@ namespace TestWebApp.Controllers
             IPolicyResult<ICloturerEnquete> result = this.cloturerEnqueteChecker.CheckPolicies(context);
             if (result.Allowed)
             {
-                result.Action.Execute(enquete);
-                return this.Ok();
+                result.Action.Execute(enquete, context.Utilisateur);
+                return this.View(enquete);
             }
 
-            return this.BadRequest();
+            return this.View("Unauthorized");
         }
     }
 }
