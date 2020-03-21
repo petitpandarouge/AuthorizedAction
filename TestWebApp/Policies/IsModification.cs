@@ -1,9 +1,10 @@
-﻿using TestWebApp.Models;
+﻿using TestWebApp.AuthorizationAction;
+using TestWebApp.Models;
 using TestWebApp.Policies.Context;
 
 namespace TestWebApp.Policies
 {
-    public class IsModification : AUtilisateurPolicy, IIsModification
+    public class IsModification : APolicy<IUtilisateurPolicyContext>, IIsModification
     {
         public override bool Check(IUtilisateurPolicyContext context)
         {

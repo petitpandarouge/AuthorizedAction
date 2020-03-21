@@ -22,13 +22,23 @@ namespace TestWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Utilisateur
             services.AddPolicy<IIsAdmin, IsAdmin>();
             services.AddPolicy<IIsModification, IsModification>();
 
+            // Enquete
+            services.AddPolicy<IIsNotCloture, IsNotCloture>();
+            services.AddPolicy<IIsApresOuverture, IsApresOuverture>();
+            services.AddPolicy<IIsAvantFermeture, IsAvantFermeture>();
+
+            // Cloturer enquete
             services.AddAuthorizedAction<CloturerEnquetePolicyContext, ICloturerEnquete>()
-                    .Check<IIsAdmin>()
+                    .CheckPolicy<IIsAdmin>()
+                    .CheckPolicy<IIsNotCloture>()
+                    .CheckPolicy<IIsApresOuverture>()
+                    .CheckPolicy<IIsAvantFermeture>()
                     .ThenExecute<CloturerEnqueteAdmin>()
-                    .Check<IIsModification>()
+                    .CheckPolicy<IIsModification>()
                     .ThenExecute<CloturerEnqueteModification>();
 
 

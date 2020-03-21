@@ -39,16 +39,15 @@ namespace TestWebApp.Controllers
         {
             CloturerEnquetePolicyContext context = new CloturerEnquetePolicyContext
             {
-                Utilisateur = Utilisateur.CreateAdmin()
+                Utilisateur = Utilisateur.CreateAdmin(),
+                Enquete = Enquete.Create()
             };
-
-            Enquete enquete = Enquete.Create();
 
             IPolicyResult<ICloturerEnquete> result = this.cloturerEnqueteChecker.CheckPolicies(context);
             if (result.Allowed)
             {
-                result.Action.Execute(enquete, context.Utilisateur);
-                return this.View(enquete);
+                result.Action.Execute(context.Enquete, context.Utilisateur);
+                return this.View(context.Enquete);
             }
 
             return this.View("Unauthorized");

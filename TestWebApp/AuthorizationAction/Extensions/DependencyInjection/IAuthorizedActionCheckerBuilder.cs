@@ -19,7 +19,7 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
         /// </summary>
         /// <typeparam name="TPolicy">The type of the context used to check the policies.</typeparam>
         /// <returns>The authorization action checker builder.</returns>
-        IAuthorizedActionCheckerBuilder<TPolicyContext, TAction> Check<TPolicy>()
+        IAuthorizedActionCheckerBuilder<TPolicyContext, TAction> CheckPolicy<TPolicy>()
             where TPolicy : IPolicy;
 
         /// <summary>
