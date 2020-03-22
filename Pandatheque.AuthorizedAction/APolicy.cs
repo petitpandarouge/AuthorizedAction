@@ -3,7 +3,7 @@
 namespace Pandatheque.AuthorizedAction
 {
     public abstract class APolicy<TContext> : IPolicy<TContext>
-        where TContext : class
+        where TContext : class 
     {
         #region IPolicy
 
