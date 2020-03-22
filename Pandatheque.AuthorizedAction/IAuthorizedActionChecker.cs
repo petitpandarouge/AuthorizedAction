@@ -1,4 +1,4 @@
-﻿namespace TestWebApp.AuthorizationAction
+﻿namespace Pandatheque.AuthorizedAction
 {
     /// <summary>
     /// Interface defining a global policy checker for a given action.

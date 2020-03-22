@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
+namespace Pandatheque.AuthorizedAction.Extensions.DependencyInjection
 {
     /// <summary>
     /// Services collection collection for the authorized action dependency injection.

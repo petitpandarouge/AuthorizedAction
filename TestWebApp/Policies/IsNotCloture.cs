@@ -1,5 +1,5 @@
 ﻿using System;
-using TestWebApp.AuthorizationAction;
+using Pandatheque.AuthorizedAction;
 using TestWebApp.Policies.Context;
 
 namespace TestWebApp.Policies

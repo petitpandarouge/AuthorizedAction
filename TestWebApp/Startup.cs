@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TestWebApp.Actions;
-using TestWebApp.AuthorizationAction.Extensions.DependencyInjection;
+using Pandatheque.AuthorizedAction.Extensions.DependencyInjection;
 using TestWebApp.Policies;
 using TestWebApp.Policies.Context;
 

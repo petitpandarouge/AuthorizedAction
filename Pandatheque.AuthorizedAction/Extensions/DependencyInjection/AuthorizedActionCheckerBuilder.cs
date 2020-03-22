@@ -3,7 +3,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
+namespace Pandatheque.AuthorizedAction.Extensions.DependencyInjection
 {
     /// <summary>
     /// Class defining the authorization action checker builder.
@@ -19,11 +19,6 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
         /// Stores the services collection.
         /// </summary>
         private readonly IServiceCollection services;
-
-        /// <summary>
-        /// Stores the service provider.
-        /// </summary>
-        private readonly ServiceProvider serviceProvider;
 
         /// <summary>
         /// Stores the policy type for the current specific action.
@@ -53,7 +48,6 @@ namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
             this.policyTypes = new HashSet<Type>();
             this.specificActionTypeToPolicyTypes = new ConcurrentDictionary<Type, HashSet<Type>>();
             this.services = services;
-            this.serviceProvider = services.BuildServiceProvider();
 
             // Registering the main checker.
             this.services.AddScoped<IAuthorizedActionChecker<TPolicyContext, TAction>, AuthorizedActionChecker<TPolicyContext, TAction>>();            

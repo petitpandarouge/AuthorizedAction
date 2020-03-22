@@ -1,4 +1,4 @@
-﻿namespace TestWebApp.AuthorizationAction
+﻿namespace Pandatheque.AuthorizedAction
 {
     /// <summary>
     /// Class defining the allowed result when checking policies.

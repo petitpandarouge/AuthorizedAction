@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Pandatheque.AuthorizedAction;
 using System.Diagnostics;
 using TestWebApp.Actions;
-using TestWebApp.AuthorizationAction;
 using TestWebApp.Models;
 using TestWebApp.Policies.Context;
 
@@ -10,12 +9,10 @@ namespace TestWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> logger;
         private readonly IAuthorizedActionChecker<CloturerEnquetePolicyContext, ICloturerEnquete> cloturerEnqueteChecker;
 
-        public HomeController(ILogger<HomeController> logger, IAuthorizedActionChecker<CloturerEnquetePolicyContext, ICloturerEnquete> cloturerEnqueteChecker)
+        public HomeController(IAuthorizedActionChecker<CloturerEnquetePolicyContext, ICloturerEnquete> cloturerEnqueteChecker)
         {
-            this.logger = logger;
             this.cloturerEnqueteChecker = cloturerEnqueteChecker;
         }
 

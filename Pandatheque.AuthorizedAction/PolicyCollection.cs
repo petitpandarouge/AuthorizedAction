@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
-namespace TestWebApp.AuthorizationAction
+namespace Pandatheque.AuthorizedAction
 {
     /// <summary>
     /// Class defining a policy collection.

@@ -2,7 +2,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace TestWebApp.AuthorizationAction.Extensions.DependencyInjection
+namespace Pandatheque.AuthorizedAction.Extensions.DependencyInjection
 {
     /// <summary>
     /// Interface defining the authorization action checker builder.

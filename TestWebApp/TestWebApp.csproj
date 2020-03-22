@@ -8,6 +8,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Pandatheque.AuthorizedAction\Pandatheque.AuthorizedAction.csproj" />
+  </ItemGroup>
+
 
 
 </Project>

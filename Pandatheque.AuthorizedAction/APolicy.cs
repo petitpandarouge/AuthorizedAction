@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TestWebApp.AuthorizationAction
+namespace Pandatheque.AuthorizedAction
 {
     public abstract class APolicy<TContext> : IPolicy<TContext>
         where TContext : class
