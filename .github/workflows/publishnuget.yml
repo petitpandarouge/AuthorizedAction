@@ -11,12 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout master
-        uses: actions/checkout@v2
-        with:
-          dotnet-version: 3.1.200
+    - name: Checkout master
+      uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.200
         
-      - name: Publish NuGet on version changed
-        uses: rohith/publish-nuget@v2.2.0
-        with:
-          PROJECT_FILE_PATH: Pandatheque.AuthorizedAction/Pandatheque.AuthorizedAction.csproj
+    - name: Publish NuGet on version changed
+      uses: rohith/publish-nuget@v2.2.0
+      with:
+        PROJECT_FILE_PATH: Pandatheque.AuthorizedAction/Pandatheque.AuthorizedAction.csproj
