@@ -3,7 +3,7 @@
     /// <summary>
     /// Class defining the not allowed result when checking policies.
     /// </summary>
-    /// <typeparam name="TAction"></typeparam>
+    /// <typeparam name="TAction">The type of the not allowed action.</typeparam>
     public class NotAllowedResult<TAction> : IPolicyResult<TAction>
         where TAction : class
     {

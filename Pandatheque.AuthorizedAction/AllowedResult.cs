@@ -3,7 +3,7 @@
     /// <summary>
     /// Class defining the allowed result when checking policies.
     /// </summary>
-    /// <typeparam name="TAction"></typeparam>
+    /// <typeparam name="TAction">The type of the allowed action.</typeparam>
     public class AllowedResult<TAction> : IPolicyResult<TAction>
         where TAction : class
     {
@@ -12,6 +12,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="AllowedResult{TAction}"/> class.
         /// </summary>
+        /// <param name="action">The allowed action.</param>
         public AllowedResult(TAction action)
         {
             this.Action = action;

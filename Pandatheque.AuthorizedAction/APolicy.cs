@@ -2,6 +2,10 @@
 
 namespace Pandatheque.AuthorizedAction
 {
+    /// <summary>
+    /// Base class defining a policy.
+    /// </summary>
+    /// <typeparam name="TContext">The type of the context used to check the policy.</typeparam>
     public abstract class APolicy<TContext> : IPolicy<TContext>
         where TContext : class 
     {

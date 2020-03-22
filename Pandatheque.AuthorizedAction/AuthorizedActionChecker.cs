@@ -10,7 +10,7 @@ namespace Pandatheque.AuthorizedAction
     /// </summary>
     /// <typeparam name="TPolicyContext">The type of the context used to check the policies.</typeparam>
     /// <typeparam name="TAction">The type of the authorized action to execute.</typeparam>
-    public class AuthorizedActionChecker<TPolicyContext, TAction> : IAuthorizedActionChecker<TPolicyContext, TAction>
+    internal class AuthorizedActionChecker<TPolicyContext, TAction> : IAuthorizedActionChecker<TPolicyContext, TAction>
         where TAction : class
     {
         #region Fields
@@ -26,9 +26,9 @@ namespace Pandatheque.AuthorizedAction
         private readonly IServiceProvider serviceProvider;
 
         /// <summary>
-        /// Stores the specific actions list.
+        /// Stores the specific action checkers list.
         /// </summary>
-        private List<IAuthorizedSpecificActionChecker<TPolicyContext, TAction>> specificActions;
+        private List<IAuthorizedSpecificActionChecker<TPolicyContext, TAction>> specificActionCheckers;
 
         #endregion // Fields
 
@@ -64,16 +64,16 @@ namespace Pandatheque.AuthorizedAction
 
             this.logger.LogDebug($"Checking the policies of the {typeof(TAction).FullName} action.");
 
-            if (this.specificActions == null)
+            if (this.specificActionCheckers == null)
             {
                 // Getting the specific actions checkers lazilly at the first call.
-                this.specificActions = new List<IAuthorizedSpecificActionChecker<TPolicyContext, TAction>>(this.serviceProvider.GetServices<IAuthorizedSpecificActionChecker<TPolicyContext, TAction>>());
+                this.specificActionCheckers = new List<IAuthorizedSpecificActionChecker<TPolicyContext, TAction>>(this.serviceProvider.GetServices<IAuthorizedSpecificActionChecker<TPolicyContext, TAction>>());
             }
 
             // Returning the first specific action that checks all its policies.
-            foreach (IAuthorizedSpecificActionChecker<TPolicyContext, TAction> specificAction in this.specificActions)
+            foreach (IAuthorizedSpecificActionChecker<TPolicyContext, TAction> specificActionChecker in this.specificActionCheckers)
             {
-                IPolicyResult<TAction> result = specificAction.CheckPolicies(context);
+                IPolicyResult<TAction> result = specificActionChecker.CheckPolicies(context);
                 if (result.Allowed)
                 {
                     return result;

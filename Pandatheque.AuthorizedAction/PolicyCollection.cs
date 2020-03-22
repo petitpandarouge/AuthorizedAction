@@ -8,7 +8,7 @@ namespace Pandatheque.AuthorizedAction
     /// <summary>
     /// Class defining a policy collection.
     /// </summary>
-    public class PolicyCollection : HashSet<IPolicy>
+    internal class PolicyCollection : HashSet<IPolicy>
     {
         #region Fields
 
