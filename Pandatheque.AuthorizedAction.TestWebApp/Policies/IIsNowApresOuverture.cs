@@ -2,7 +2,7 @@
 
 namespace Pandatheque.AuthorizedAction.TestWebApp.Policies
 {
-    public interface IIsNotCloture : IPolicy<IEnquetePolicyContext>
+    public interface IIsNowApresOuverture : IPolicy<IEnquetePolicyContext>
     {
     }
 }

@@ -1,5 +1,4 @@
-﻿using Pandatheque.AuthorizedAction;
-using Pandatheque.AuthorizedAction.TestWebApp.Models;
+﻿using Pandatheque.AuthorizedAction.TestWebApp.Models;
 using Pandatheque.AuthorizedAction.TestWebApp.Policies.Context;
 
 namespace Pandatheque.AuthorizedAction.TestWebApp.Policies

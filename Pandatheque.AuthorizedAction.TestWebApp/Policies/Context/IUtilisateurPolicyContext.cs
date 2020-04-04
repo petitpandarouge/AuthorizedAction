@@ -2,7 +2,7 @@
 
 namespace Pandatheque.AuthorizedAction.TestWebApp.Policies.Context
 {
-    public interface IUtilisateurPolicyContext
+    public interface IUtilisateurPolicyContext : IPolicyContext
     {
         #region Properties
 

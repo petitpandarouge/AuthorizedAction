@@ -6,7 +6,7 @@ using Pandatheque.AuthorizedAction.TestWebApp.Models;
 
 namespace Pandatheque.AuthorizedAction.TestWebApp.Policies.Context
 {
-    public interface IEnquetePolicyContext
+    public interface IEnquetePolicyContext : IPolicyContext
     {
         #region Properties
 

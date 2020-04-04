@@ -2,7 +2,7 @@
 
 namespace Pandatheque.AuthorizedAction.TestWebApp.Policies.Context
 {
-    public class CloturerEnquetePolicyContext : IUtilisateurPolicyContext, IEnquetePolicyContext
+    public class CloturerEnquetePolicyContext : APolicyContext, IUtilisateurPolicyContext, IEnquetePolicyContext
     {
         #region Properties
 

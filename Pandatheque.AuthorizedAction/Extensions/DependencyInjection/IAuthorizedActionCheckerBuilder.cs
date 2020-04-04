@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq.Expressions;
-
-namespace Pandatheque.AuthorizedAction.Extensions.DependencyInjection
+﻿namespace Pandatheque.AuthorizedAction.Extensions.DependencyInjection
 {
     /// <summary>
     /// Interface defining the authorization action checker builder.

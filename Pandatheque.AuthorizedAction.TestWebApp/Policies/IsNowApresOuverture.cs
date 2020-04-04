@@ -2,11 +2,11 @@
 
 namespace Pandatheque.AuthorizedAction.TestWebApp.Policies
 {
-    public class IsNotCloture : APolicy<IEnquetePolicyContext>, IIsNotCloture
+    public class IsNowApresOuverture : APolicy<IEnquetePolicyContext>, IIsNowApresOuverture
     {
         public override bool Check(IEnquetePolicyContext context)
         {
-            return context.Enquete.DateCloture.HasValue == false;
+            return context.Enquete.DateOuverture <= context.TimeStamp;
         }
     }
 }

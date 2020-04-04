@@ -5,7 +5,7 @@
     /// </summary>
     /// <typeparam name="TContext">The type of the context used to check the policy.</typeparam>
     public interface IPolicy<TContext> : IPolicy
-        where TContext : class
+        where TContext : class, IPolicyContext
     {
         #region Methods
 

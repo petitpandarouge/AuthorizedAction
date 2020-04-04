@@ -28,15 +28,15 @@ namespace TestWebApp
 
             // Enquete
             services.AddPolicy<IIsNotCloture, IsNotCloture>();
-            services.AddPolicy<IIsApresOuverture, IsApresOuverture>();
-            services.AddPolicy<IIsAvantFermeture, IsAvantFermeture>();
+            services.AddPolicy<IIsNowApresOuverture, IsNowApresOuverture>();
+            services.AddPolicy<IIsNowAvantFermeture, IsNowAvantFermeture>();
 
             // Cloturer enquete
             services.AddAuthorizedAction<CloturerEnquetePolicyContext, ICloturerEnquete>()
                     .CheckPolicy<IIsAdmin>()
                     .CheckPolicy<IIsNotCloture>()
-                    .CheckPolicy<IIsApresOuverture>()
-                    .CheckPolicy<IIsAvantFermeture>()
+                    .CheckPolicy<IIsNowApresOuverture>()
+                    .CheckPolicy<IIsNowAvantFermeture>()
                     .ThenExecute<CloturerEnqueteAdmin>()
                     .CheckPolicy<IIsModification>()
                     .ThenExecute<CloturerEnqueteModification>();
