@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Pandatheque.AuthorizedAction.TestWebApp.Models
 {
     public class Enquete
     {
+        public int Id { get; set; }
+
         public DateTime DateOuverture { get; set; }
 
         public DateTime? DateCloture { get; set; }
@@ -14,6 +13,8 @@ namespace Pandatheque.AuthorizedAction.TestWebApp.Models
         public DateTime DateFermeture { get; set; }
 
         public Utilisateur UtilisateurModification { get; set; }
+
+        public bool CanCloture { get; set; } = false;
 
         public static Enquete Create()
         {

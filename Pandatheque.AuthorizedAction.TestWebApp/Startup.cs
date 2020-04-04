@@ -41,6 +41,8 @@ namespace TestWebApp
                     .CheckPolicy<IIsModification>()
                     .ThenExecute<CloturerEnqueteModification>();
 
+            // Lister enquetes
+            services.AddAlwaysAuthorizedAction<IListerEnquetes, ListerEnquetes>();
 
             services.AddControllersWithViews();
         }

@@ -1,0 +1,23 @@
+﻿@model ICollection<Enquete>
+@{
+    ViewData["Title"] = "Lister enquêtes";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Résultat</h1>
+    @foreach (Enquete enquete in Model)
+    {
+        <p>
+            L'enquête @enquete.Id
+            @if (enquete.CanCloture)
+            {
+                <text> peut être clôturée.</text>
+            }
+            else
+            {
+                <text> ne peut pas être clôturée.</text>
+            }
+        </p>
+    }
+</div>
+

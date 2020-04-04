@@ -35,6 +35,20 @@ namespace Pandatheque.AuthorizedAction.Extensions.DependencyInjection
             return new AuthorizedActionCheckerBuilder<TPolicyContext, TAction>(services);
         }
 
+        /// <summary>
+        /// Adds an always authorized action in the services collection.
+        /// </summary>
+        /// <typeparam name="TAction">The type of the authorized action to execute.</typeparam>
+        /// <typeparam name="TImplementation">The type of the only implementation of the action to execute.</typeparam>
+        /// <param name="services">The extended service collection.</param>
+        public static void AddAlwaysAuthorizedAction<TAction, TImplementation>(this IServiceCollection services)
+            where TAction : class
+            where TImplementation : class, TAction
+        {
+            var builder = new AuthorizedActionCheckerBuilder<VoidPolicyContext, TAction>(services);
+            builder.ThenExecute<TImplementation>();
+        }
+
         #endregion // Methods
     }
 }
