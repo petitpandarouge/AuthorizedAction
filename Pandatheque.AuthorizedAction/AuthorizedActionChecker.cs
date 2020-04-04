@@ -11,6 +11,7 @@ namespace Pandatheque.AuthorizedAction
     /// <typeparam name="TPolicyContext">The type of the context used to check the policies.</typeparam>
     /// <typeparam name="TAction">The type of the authorized action to execute.</typeparam>
     internal class AuthorizedActionChecker<TPolicyContext, TAction> : IAuthorizedActionChecker<TPolicyContext, TAction>
+        where TPolicyContext : class, IPolicyContext
         where TAction : class
     {
         #region Fields

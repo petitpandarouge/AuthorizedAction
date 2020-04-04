@@ -30,6 +30,7 @@ namespace Pandatheque.AuthorizedAction.Extensions.DependencyInjection
         /// <param name="services">The extended service collection.</param>
         /// <returns>The authorization action checker builder.</returns>
         public static IAuthorizedActionCheckerBuilder<TPolicyContext, TAction> AddAuthorizedAction<TPolicyContext, TAction>(this IServiceCollection services)
+            where TPolicyContext : class, IPolicyContext
             where TAction : class
         {
             return new AuthorizedActionCheckerBuilder<TPolicyContext, TAction>(services);

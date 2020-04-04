@@ -5,7 +5,7 @@ namespace Pandatheque.AuthorizedAction
     /// <summary>
     /// Base class for a policy context.
     /// </summary>
-    public abstract class APolicyContext
+    public abstract class APolicyContext : IPolicyContext
     {
         #region Constructors
 

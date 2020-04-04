@@ -12,6 +12,7 @@ namespace Pandatheque.AuthorizedAction
     /// <typeparam name="TAction">The type of the authorized action to execute.</typeparam>
     /// <typeparam name="TSpecificAction">The type of the speicific action to execute.</typeparam>
     internal class AuthorizedSpecificActionChecker<TPolicyContext, TAction, TSpecificAction> : IAuthorizedSpecificActionChecker<TPolicyContext, TAction, TSpecificAction>
+        where TPolicyContext : class, IPolicyContext
         where TAction : class
         where TSpecificAction : class, TAction
     {

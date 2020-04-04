@@ -11,6 +11,7 @@ namespace Pandatheque.AuthorizedAction.Extensions.DependencyInjection
     /// <typeparam name="TPolicyContext">The type of the context used to check the policies.</typeparam>
     /// <typeparam name="TAction">The type of the authorized action to execute.</typeparam>
     internal class AuthorizedActionCheckerBuilder<TPolicyContext, TAction> : IAuthorizedActionCheckerBuilder<TPolicyContext, TAction>
+        where TPolicyContext : class, IPolicyContext
         where TAction : class
     {
         #region Fields
