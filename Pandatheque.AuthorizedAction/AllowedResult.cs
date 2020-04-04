@@ -1,4 +1,6 @@
-﻿namespace Pandatheque.AuthorizedAction
+﻿using System;
+
+namespace Pandatheque.AuthorizedAction
 {
     /// <summary>
     /// Class defining the allowed result when checking policies.
@@ -15,7 +17,7 @@
         /// <param name="action">The allowed action.</param>
         public AllowedResult(TAction action)
         {
-            this.Action = action;
+            this.Action = action ?? throw new ArgumentNullException(nameof(action));
         }
 
         #endregion // Constructors

@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
   <PropertyGroup>
     <Authors>Petit Panda Rouge</Authors>
     <Description>Condition pattern action processing using the .Net Core dependency injection.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/petitpandarouge/AuthorizedAction</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

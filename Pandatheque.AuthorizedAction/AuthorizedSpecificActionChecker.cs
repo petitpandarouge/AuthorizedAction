@@ -48,8 +48,8 @@ namespace Pandatheque.AuthorizedAction
         /// <param name="serviceProvider">The service provider.</param>
         public AuthorizedSpecificActionChecker(HashSet<Type> policyTypes, IServiceProvider serviceProvider)
         {
-            this.policyTypes = policyTypes;
-            this.serviceProvider = serviceProvider;
+            this.policyTypes = policyTypes ?? throw new ArgumentNullException(nameof(policyTypes));
+            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         #endregion // Constructors

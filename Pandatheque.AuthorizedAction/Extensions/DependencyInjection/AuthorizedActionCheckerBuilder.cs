@@ -40,14 +40,9 @@ namespace Pandatheque.AuthorizedAction.Extensions.DependencyInjection
         /// <param name="services">The services collection.</param>
         public AuthorizedActionCheckerBuilder(IServiceCollection services)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
+            this.services = services ?? throw new ArgumentNullException(nameof(services));
             this.policyTypes = new HashSet<Type>();
             this.specificActionTypeToPolicyTypes = new ConcurrentDictionary<Type, HashSet<Type>>();
-            this.services = services;
 
             // Registering the main checker.
             this.services.AddScoped<IAuthorizedActionChecker<TPolicyContext, TAction>, AuthorizedActionChecker<TPolicyContext, TAction>>();            

@@ -40,7 +40,7 @@ namespace Pandatheque.AuthorizedAction
         /// <param name="serviceProvider">The global service provider.</param>
         public AuthorizedActionChecker(IServiceProvider serviceProvider)
         {
-            this.serviceProvider = serviceProvider;
+            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         #endregion // Constructors

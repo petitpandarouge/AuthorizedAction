@@ -28,13 +28,17 @@ namespace Pandatheque.AuthorizedAction
 
         #endregion // Constructors
 
+        #region IPolicyContext
+
         #region Properties
 
         /// <summary>
         /// Gets the context time stamp.
         /// </summary>
-        public DateTime TimeStamp { get; private set; } 
+        public DateTime TimeStamp { get; private set; }
 
         #endregion // Properties
+
+        #endregion // IPolicyContext
     }
 }
