@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Pandatheque.AuthorizedAction
 {
@@ -64,7 +65,7 @@ namespace Pandatheque.AuthorizedAction
         /// </summary>
         /// <param name="context">The policies checking context.</param>
         /// <returns>The policies checking result.</returns>
-        public IPolicyResult<TAction> CheckPolicies(TPolicyContext context)
+        public async Task<IPolicyResult<TAction>> CheckPoliciesAsync(TPolicyContext context)
         {
             if (this.logger == null)
             {
@@ -81,7 +82,8 @@ namespace Pandatheque.AuthorizedAction
             }
 
             // Returning the specific action if it satisfies all the policies.
-            if (this.policies.Check(context))
+            bool result = await this.policies.CheckAsync(context).ConfigureAwait(false);
+            if (result)
             {
                 this.logger.LogDebug($"All the policies are satisfied. The {this.SpecificActionType.FullName} specific action execution is allowed.");
                 return new AllowedResult<TAction>(this.serviceProvider.GetRequiredService<TSpecificAction>());

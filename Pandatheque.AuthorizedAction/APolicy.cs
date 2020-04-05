@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Pandatheque.AuthorizedAction
 {
@@ -18,7 +19,7 @@ namespace Pandatheque.AuthorizedAction
         /// </summary>
         /// <param name="context">The policy checking context.</param>
         /// <returns>True if the policy is satisfied, false otherwise.</returns>
-        bool IPolicy.Check(object context)
+        async Task<bool> IPolicy.CheckAsync(object context)
         {
             if (context == null)
             {
@@ -33,7 +34,7 @@ namespace Pandatheque.AuthorizedAction
                 throw new InvalidCastException($"The context given to a {thisTypeName} policy must of type {contextTypeName}.");
             }
 
-            return this.Check(typedContext);
+            return await this.CheckAsync(typedContext).ConfigureAwait(false);
         }
 
         #endregion // Methods
@@ -49,7 +50,7 @@ namespace Pandatheque.AuthorizedAction
         /// </summary>
         /// <param name="context">The policy checking context.</param>
         /// <returns>True if the policy is satisfied, false otherwise.</returns>
-        public abstract bool Check(TContext context);
+        public abstract Task<bool> CheckAsync(TContext context);
 
         #endregion // Methods
 

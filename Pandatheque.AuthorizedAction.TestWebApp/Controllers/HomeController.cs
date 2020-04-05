@@ -4,6 +4,7 @@ using Pandatheque.AuthorizedAction.TestWebApp.Models;
 using Pandatheque.AuthorizedAction.TestWebApp.Policies.Context;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Pandatheque.AuthorizedAction.TestWebApp.Controllers
 {
@@ -36,7 +37,7 @@ namespace Pandatheque.AuthorizedAction.TestWebApp.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult CloturerEnquete()
+        public async Task<IActionResult> CloturerEnquete()
         {
             CloturerEnquetePolicyContext context = new CloturerEnquetePolicyContext
             {
@@ -44,7 +45,7 @@ namespace Pandatheque.AuthorizedAction.TestWebApp.Controllers
                 Enquete = Enquete.Create()
             };
 
-            IPolicyResult<ICloturerEnquete> result = this.cloturerEnqueteChecker.CheckPolicies(context);
+            IPolicyResult<ICloturerEnquete> result = await this.cloturerEnqueteChecker.CheckPoliciesAsync(context).ConfigureAwait(false);
             if (result.Allowed)
             {
                 result.Action.Execute(context.Enquete, context.Utilisateur);
@@ -54,12 +55,12 @@ namespace Pandatheque.AuthorizedAction.TestWebApp.Controllers
             return this.View("Unauthorized");
         }
 
-        public IActionResult ListerEnquetes()
+        public async Task<IActionResult> ListerEnquetes()
         {
-            IPolicyResult<IListerEnquetes> result = this.listerEnquetesChecker.CheckPolicies(new VoidPolicyContext());
+            IPolicyResult<IListerEnquetes> result = await this.listerEnquetesChecker.CheckPoliciesAsync(new VoidPolicyContext()).ConfigureAwait(false);
             if (result.Allowed)
             {
-                ICollection<Enquete> enquetes = result.Action.Execute();
+                ICollection<Enquete> enquetes = await result.Action.ExecuteAsync();
                 return this.View(enquetes);
             }
 

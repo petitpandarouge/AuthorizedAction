@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Pandatheque.AuthorizedAction
 {
@@ -55,7 +56,7 @@ namespace Pandatheque.AuthorizedAction
         /// </summary>
         /// <param name="context">The policies checking context.</param>
         /// <returns>The policies checking result.</returns>
-        public IPolicyResult<TAction> CheckPolicies(TPolicyContext context)
+        public async Task<IPolicyResult<TAction>> CheckPoliciesAsync(TPolicyContext context)
         {
             if (this.logger == null)
             {
@@ -74,7 +75,7 @@ namespace Pandatheque.AuthorizedAction
             // Returning the first specific action that checks all its policies.
             foreach (IAuthorizedSpecificActionChecker<TPolicyContext, TAction> specificActionChecker in this.specificActionCheckers)
             {
-                IPolicyResult<TAction> result = specificActionChecker.CheckPolicies(context);
+                IPolicyResult<TAction> result = await specificActionChecker.CheckPoliciesAsync(context).ConfigureAwait(false);
                 if (result.Allowed)
                 {
                     return result;

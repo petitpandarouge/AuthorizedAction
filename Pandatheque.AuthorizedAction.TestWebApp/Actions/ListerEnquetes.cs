@@ -2,6 +2,7 @@
 using Pandatheque.AuthorizedAction.TestWebApp.Policies.Context;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Pandatheque.AuthorizedAction.TestWebApp.Actions
 {
@@ -15,7 +16,7 @@ namespace Pandatheque.AuthorizedAction.TestWebApp.Actions
             this.cloturerEnqueteChecker = cloturerEnqueteChecker;
         }
 
-        public ICollection<Enquete> Execute()
+        public async Task<ICollection<Enquete>> ExecuteAsync()
         {
             List<Enquete> enquetes = new List<Enquete>
             {
@@ -54,7 +55,8 @@ namespace Pandatheque.AuthorizedAction.TestWebApp.Actions
                     Enquete = enquete
                 };
 
-                enquete.CanCloture = this.cloturerEnqueteChecker.CheckPolicies(context).Allowed;
+                var result = await this.cloturerEnqueteChecker.CheckPoliciesAsync(context).ConfigureAwait(false);
+                enquete.CanCloture = result.Allowed;
             }
 
             return enquetes;

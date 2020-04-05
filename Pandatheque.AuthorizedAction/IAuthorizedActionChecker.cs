@@ -1,4 +1,6 @@
-﻿namespace Pandatheque.AuthorizedAction
+﻿using System.Threading.Tasks;
+
+namespace Pandatheque.AuthorizedAction
 {
     /// <summary>
     /// Interface defining a global policy checker for a given action.
@@ -16,7 +18,7 @@
         /// </summary>
         /// <param name="context">The policies checking context.</param>
         /// <returns>The policies checking result.</returns>
-        IPolicyResult<TAction> CheckPolicies(TPolicyContext context);
+        Task<IPolicyResult<TAction>> CheckPoliciesAsync(TPolicyContext context);
 
         #endregion // Methods
     }

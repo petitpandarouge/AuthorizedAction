@@ -1,4 +1,6 @@
-﻿namespace Pandatheque.AuthorizedAction
+﻿using System.Threading.Tasks;
+
+namespace Pandatheque.AuthorizedAction
 {
     /// <summary>
     /// Interface defining a policy.
@@ -14,7 +16,7 @@
         /// </summary>
         /// <param name="context">The policy checking context.</param>
         /// <returns>True if the policy is satisfied, false otherwise.</returns>
-        bool Check(TContext context);
+        Task<bool> CheckAsync(TContext context);
 
         #endregion // Methods
     }
@@ -31,7 +33,7 @@
         /// </summary>
         /// <param name="context">The policy checking context.</param>
         /// <returns>True if the policy is satisfied, false otherwise.</returns>
-        bool Check(object context);
+        Task<bool> CheckAsync(object context);
 
         #endregion // Methods
     }

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Pandatheque.AuthorizedAction
 {
@@ -62,7 +63,7 @@ namespace Pandatheque.AuthorizedAction
         /// </summary>
         /// <param name="context">The policies context.</param>
         /// <returns>True if all the policies are satified, false otherwise.</returns>
-        public bool Check(object context)
+        public async Task<bool> CheckAsync(object context)
         {
             if (this.logger == null)
             {
@@ -72,7 +73,8 @@ namespace Pandatheque.AuthorizedAction
 
             foreach (IPolicy policy in this)
             {
-                if (policy.Check(context) == false)
+                bool result = await policy.CheckAsync(context).ConfigureAwait(false);
+                if (result == false)
                 {
                     this.logger.LogDebug($"The {policy.GetType().FullName} policy is NOT satisfied.");
                     return false;
