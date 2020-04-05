@@ -60,7 +60,7 @@ namespace Pandatheque.AuthorizedAction.TestWebApp.Controllers
             IPolicyResult<IListerEnquetes> result = await this.listerEnquetesChecker.CheckPoliciesAsync(new VoidPolicyContext()).ConfigureAwait(false);
             if (result.Allowed)
             {
-                ICollection<Enquete> enquetes = await result.Action.ExecuteAsync();
+                ICollection<Enquete> enquetes = await result.Action.ExecuteAsync().ConfigureAwait(false);
                 return this.View(enquetes);
             }
 
