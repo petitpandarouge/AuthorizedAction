@@ -5,3 +5,15 @@
 [![NuGet](https://img.shields.io/nuget/vpre/pandatheque.authorizedaction.svg)](https://www.nuget.org/packages/pandatheque.authorizedaction)
 
 Condition pattern action processing using the .Net Core dependency injection.
+
+### Installing AuthorizedAction
+
+You should install [AuthorizedAction with NuGet](https://www.nuget.org/packages/pandatheque.authorizedaction):
+
+    Install-Package Pandatheque.AuthorizedAction
+    
+Or via the .NET Core command line interface:
+
+    dotnet add package Pandatheque.AuthorizedAction
+    
+Either commands, from Package Manager Console or .NET Core CLI, will download and install AuthorizedAction and all required dependencies.
